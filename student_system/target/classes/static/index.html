@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录</title>
+</head>
+
+<body>
+    <form>
+        <div>
+            <label for="userName">用户名</label>
+            <input type="text" id="userName" name="userName">
+        </div>
+        <div>
+            <label for="password">密码</label>
+            <input type="password" id="password" name="password">
+        </div>
+        <input type="button" value="登录" id="loginButton">
+    </form>
+    <script>
+        const userName = document.getElementById('userName');
+        const password = document.getElementById('password');
+        const loginBtn = document.getElementById('loginButton');
+
+        loginBtn.addEventListener('click', (evt) => {
+            evt.preventDefault();
+
+            const form = new FormData();
+            form.append('userName', userName.value);
+            form.append('password', password.value);
+
+            const http = new XMLHttpRequest();
+            http.open('POST', '/login', true);
+            http.onload = () => {
+                console.log(http.responseText);
+                const resp = JSON.parse(http.responseText);
+                if (resp.success) {
+                    location.href = '/main.html';
+                }
+                else {
+                    alert(resp.message);
+                }
+            };
+            http.send(form);
+        });
+    </script>
+</body>
+
+</html>
