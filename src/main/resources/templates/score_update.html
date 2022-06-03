@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.37/favicon.ico">
+    <link rel="canonical" href="https://getbootstrap.com/docs/3.4/examples/dashboard/">
+
+    <title>学生管理系统</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.37/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link
+        href="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.37/assets/css/ie10-viewport-bug-workaround.css"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.37/examples/dashboard/dashboard.css"
+        rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.37/assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script
+        src="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.37/assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script>
+        function refresh() {
+            location.reload()
+        }
+        function onUpdate() {
+            const iptSID = document.getElementById('iptSID');
+            const iptCID = document.getElementById('iptCID');
+            const iptTime = document.getElementById('iptTime');
+            const iptScore = document.getElementById('iptScore');
+
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    const obj = JSON.parse(this.responseText);
+                    console.log(obj);
+                    if (obj.success) {
+                        alert('修改成功!');
+                        refresh();
+                    } else {
+                        alert('修改失败!');
+                    }
+
+                }
+            }
+            xhttp.open("PUT", "/score/update?sid="+iptSID.value+'&cid=' + iptCID.value + '&time=' + iptTime.value + '&score=' + iptScore.value
+                , true);
+            xhttp.setRequestHeader('Accept', 'application/json');
+            xhttp.send();
+
+        }
+        var xhttp = new XMLHttpRequest();
+    </script>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">学生管理系统</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="login.html">注销</a></li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 col-md-2 sidebar">
+                <ul class="nav nav-sidebar">
+                    <li><a href="student.html">学生信息</a></li>
+                    <li><a href="stu_update.html">学生信息修改</a></li>
+                    <li><a href="stu_add.html">学生信息添加</a></li>
+                    <li><a href="download.html">学生信息下载</a></li>
+                </ul>
+                <ul class="nav nav-sidebar">
+                    <li><a href="scourse.html">学生课程表</a></li>
+                    <li><a href="course_update.html">课程修改</a></li>
+                    <li><a href="course_add.html">课程添加</a></li>
+                </ul>
+                <ul class="nav nav-sidebar">
+                    <li><a href="score.html">学生成绩表</a></li>
+                    <li class="active"><a href="score_update.html">成绩修改<span class="sr-only">(current)</span></a></li>
+                    <li><a href="score_add.html">成绩添加</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <h1 class="page-header">输入框</h1>
+                <form role="form">
+                    <div class="form-group">
+                        <label for="iptSID">Sid<input type="text" class="form-control" id="iptSID" name="sid" />
+                            <label for="iptCID">Cid<input type="text" class="form-control" id="iptCID" name="cid" />
+                                <label for="iptTime">时间</label><input type="text" class="form-control" name="time"
+                                    id="iptTime" />
+                                <label for="iptScore">分数<input type="text" class="form-control" id="iptScore"
+                                        name="score" />
+                    </div>
+                    <div class="input-but">
+                        <input type="button" value="修改" class="btn btn-default" onclick="onUpdate()">
+                        <input type="button" value="刷新" class="btn btn-default" onclick="refresh()">
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript
+================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://fastly.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"
+        integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ"
+        crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.37/assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.37/dist/js/bootstrap.min.js"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <script
+        src="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.37/assets/js/vendor/holder.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script
+        src="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.37/assets/js/ie10-viewport-bug-workaround.js"></script>
+</body>
+
+</html>
