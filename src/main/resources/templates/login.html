@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>登录</title>
+	<script src="http://cdn.bootcss.com/blueimp-md5/1.1.0/js/md5.js"></script>
+</head>
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<link rel="icon" href="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.37/favicon.ico">
+<link href="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.37/dist/css/bootstrap.min.css"
+	  rel="stylesheet">
+<link href="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.37/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+<link href="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.37/examples/dashboard/dashboard.css" rel="stylesheet">
+<script src="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.37/assets/js/ie8-responsive-file-warning.js"></script>
+<script src="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.37/assets/js/ie-emulation-modes-warning.js"></script>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<style>
+	* {
+		margin: 0;
+		padding: 0;
+	}
+
+	body {
+		background-image: url(./static/img/9.jpeg);
+	}
+
+	form {
+		width: 400px;
+		background-color: white;
+		margin: 200px auto;
+		padding: 1rem;
+		text-align: center;
+		border-radius: 10px;
+		opacity: 0.7;
+	}
+
+	form>div {
+		margin: 1rem 0;
+	}
+
+	.text-input {
+		height: 4rem;
+		width: 80%;
+		border-top: 0;
+		border-left: 0;
+		border-right: 0;
+		border-bottom: 2px solid orange;
+		outline: none;
+		font-size: 2rem;
+		padding-left: 3rem;
+
+	}
+
+	.user-bg {
+		background-image: url(./user.png);
+		background-repeat: no-repeat;
+		background-size: 3rem;
+	}
+
+	.pass {
+		background-image: url(./pas.png);
+		background-repeat: no-repeat;
+		background-size: 3rem;
+	}
+
+</style>
+
+<body>
+	<form id="form-login">
+		<h2>登录</h2>
+		<div>
+			<input type="text" class="text-input user-bg" id="account" name="account" placeholder="用户名">
+		</div>
+		<div>
+			<input type="password" class="text-input pass" id="password" name="password" placeholder="密码">
+			<input type="hidden" id="md5_password" name="md5_password" >
+		</div>
+		<div>
+		<input type="button" value="登录" class="btn btn-default" id="loginButton"  >
+		<input type="button" value="注册" class="btn btn-default"  onclick="regBtn()">
+		</div>
+	</form>
+	<script>
+		const account = document.getElementById('account');
+		const password = document.getElementById('password');
+		let md5pwd = document.getElementById('md5_password');
+		const loginBtn = document.getElementById('loginButton');
+		md5pwd.value = md5(password.value+'huahua');
+
+		loginBtn.addEventListener('click', (evt) => {
+			evt.preventDefault();
+
+			const form = new FormData();
+			form.append('account', account.value);
+			form.append('password', md5pwd.value);
+
+			const http = new XMLHttpRequest();
+			http.open('POST', '/login', true);
+			http.onload = () => {
+				console.log(http.responseText);
+				const resp = JSON.parse(http.responseText);
+				if (resp.success) {
+					alert('登录成功！');
+					location.href = '/student.html';
+				}
+				else {
+					alert(resp.message);
+				}
+			};
+			http.send(form);
+		});
+		function regBtn()
+		{
+			window.location.replace("http://localhost:8080/register.html")
+		}
+
+	</script>
+</body>
+
+</html>
